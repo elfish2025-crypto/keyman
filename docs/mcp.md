@@ -1,6 +1,6 @@
 # 本机 MCP
 
-Keyman 0.7.4 提供 stdio MCP。GUI、CLI 和 MCP 共用本机配置与钥匙串凭证库，不监听 HTTP 端口。
+Keyman 0.7.5 提供 stdio MCP。GUI、CLI 和 MCP 共用本机配置与钥匙串凭证库，不监听 HTTP 端口。
 
 安装后在支持启动本机进程的 MCP 客户端中，将 command 设为 Keyman 的绝对路径，args 设为 `["mcp"]`。例如（替换 YOUR_USERNAME）：
 

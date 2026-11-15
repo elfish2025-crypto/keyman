@@ -59,7 +59,7 @@ extension ModelRecord {
 
 @MainActor
 func expectThrowsAsync<T>(
-    _ expression: () async throws -> T
+    _ expression: @MainActor () async throws -> T
 ) async {
     do {
         _ = try await expression()

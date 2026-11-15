@@ -4,7 +4,7 @@ import KeymanCore
 
 /// Local stdio MCP. No network listener, shell dispatch, credential export or stdout logging.
 public actor MCPServer {
-    public static let version = "0.7.4"
+    public static let version = "0.7.5"
     static let protocolVersions = ["2025-11-25", "2025-06-18", "2025-03-26", "2024-11-05"]
     private enum Phase { case new, initializing, ready, closed }
     private var phase = Phase.new

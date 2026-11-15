@@ -1,6 +1,6 @@
 # Agent 管理 Keyman 的范围
 
-本清单对应 Keyman 0.7.4，重点是管理 Keyman 本身。调用配置见 [管理命令](management.md)。
+本清单对应 Keyman 0.7.5，重点是管理 Keyman 本身。调用配置见 [管理命令](management.md)。
 
 ## 接入方式
 
