@@ -1,0 +1,75 @@
+{
+  "alias": "q3-turbo-text-to-video",
+  "name": "Vidu Q3 Turbo · 文生视频",
+  "modelID": "viduq3-turbo",
+  "modality": "video",
+  "status": "declared",
+  "isEnabled": true,
+  "callTemplate": {
+    "endpointAlias": "vidu-api",
+    "method": "POST",
+    "path": "/ent/v2/text2video",
+    "modelIDBodyField": "model",
+    "staticHeaders": {},
+    "requestFields": [
+      "model",
+      "prompt",
+      "duration",
+      "resolution",
+      "audio",
+      "off_peak",
+      "watermark",
+      "aspect_ratio"
+    ],
+    "isAsync": true,
+    "responseFormat": "vidu-video",
+    "requiredBodyFields": [
+      "prompt"
+    ],
+    "outputPaths": [
+      "creations.*.url"
+    ],
+    "taskQuery": {
+      "path": "/ent/v2/tasks/{id}/creations",
+      "idPath": "task_id",
+      "queryIDPath": "id",
+      "statusPath": "state",
+      "pendingValues": [
+        "created",
+        "queueing",
+        "processing"
+      ],
+      "successValues": [
+        "success"
+      ],
+      "failureValues": [
+        "failed"
+      ]
+    }
+  },
+  "usageGuide": {
+    "summary": "Synthetic Vidu contract fixture for offline validation.",
+    "useCases": [
+      "test"
+    ],
+    "inputs": "Synthetic image URLs and prompt",
+    "outputs": "Mock task response",
+    "instructions": [
+      "Use only with the in-memory test transport."
+    ],
+    "limitations": [
+      "Test contract, not a current provider capability or account entitlement claim."
+    ],
+    "documentationURLs": [],
+    "requestExample": {
+      "model": "viduq3-turbo",
+      "prompt": "一个白瓷杯放在木桌上，窗边自然光，镜头缓慢推进，画面稳定。",
+      "duration": 5,
+      "resolution": "720p",
+      "audio": false,
+      "off_peak": false,
+      "watermark": false,
+      "aspect_ratio": "16:9"
+    }
+  }
+}

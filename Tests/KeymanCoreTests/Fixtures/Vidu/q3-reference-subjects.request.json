@@ -1,0 +1,18 @@
+{
+  "model": "viduq3",
+  "subjects": [
+    {
+      "name": "astronaut",
+      "images": [
+        "https://example.invalid/image2video.png"
+      ]
+    }
+  ],
+  "prompt": "@astronaut 轻轻挥手，保持外观一致，镜头稳定。",
+  "duration": 5,
+  "resolution": "720p",
+  "aspect_ratio": "16:9",
+  "audio": false,
+  "watermark": false,
+  "off_peak": false
+}

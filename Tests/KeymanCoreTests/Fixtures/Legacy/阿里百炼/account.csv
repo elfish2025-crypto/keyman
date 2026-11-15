@@ -1,0 +1,8 @@
+id,1234567
+apiKey,unit-test-import-credential
+apiHost,https://workspace.cn-beijing.maas.aliyuncs.com
+openAiCompatible,https://workspace.cn-beijing.maas.aliyuncs.com/compatible-mode/v1
+dashScope,https://workspace.cn-beijing.maas.aliyuncs.com/api/v1
+description,example-workspace
+workspaceName,example-workspace
+workspaceId,ws-unit-test

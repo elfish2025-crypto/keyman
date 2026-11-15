@@ -1,0 +1,14 @@
+{
+  "model": "viduq3-pro",
+  "prompt": "从首帧自然过渡到尾帧，鸟向右平稳飞行，镜头跟随。",
+  "duration": 5,
+  "resolution": "720p",
+  "audio": false,
+  "off_peak": false,
+  "watermark": false,
+  "images": [
+    "https://example.invalid/startend2video-1.jpeg",
+    "https://example.invalid/startend2video-2.jpeg"
+  ],
+  "is_rec": false
+}

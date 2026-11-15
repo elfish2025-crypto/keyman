@@ -1,0 +1,12 @@
+{
+  "alias": "example-account",
+  "name": "示例账号",
+  "provider": "custom-rest",
+  "project": "example-project",
+  "authentication": {
+    "headerName": "Authorization",
+    "prefix": "Bearer",
+    "environmentVariable": "EXAMPLE_API_KEY"
+  },
+  "notes": "配置结构示例；请根据供应商资料修改接口、认证方式与模型。"
+}

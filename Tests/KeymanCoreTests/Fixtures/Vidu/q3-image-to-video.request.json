@@ -1,0 +1,13 @@
+{
+  "model": "viduq3-pro",
+  "prompt": "宇航员轻轻挥手，镜头缓慢上移，动作自然。",
+  "duration": 5,
+  "resolution": "720p",
+  "audio": false,
+  "off_peak": false,
+  "watermark": false,
+  "images": [
+    "https://example.invalid/image2video.png"
+  ],
+  "is_rec": false
+}

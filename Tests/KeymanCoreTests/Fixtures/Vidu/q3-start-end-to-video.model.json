@@ -1,0 +1,80 @@
+{
+  "alias": "q3-start-end-to-video",
+  "name": "Vidu Q3 Pro · 首尾帧生视频",
+  "modelID": "viduq3-pro",
+  "modality": "video",
+  "status": "declared",
+  "isEnabled": true,
+  "callTemplate": {
+    "endpointAlias": "vidu-api",
+    "method": "POST",
+    "path": "/ent/v2/start-end2video",
+    "modelIDBodyField": "model",
+    "staticHeaders": {},
+    "requestFields": [
+      "model",
+      "prompt",
+      "duration",
+      "resolution",
+      "audio",
+      "off_peak",
+      "watermark",
+      "images",
+      "is_rec"
+    ],
+    "isAsync": true,
+    "responseFormat": "vidu-video",
+    "requiredBodyFields": [
+      "images"
+    ],
+    "outputPaths": [
+      "creations.*.url"
+    ],
+    "taskQuery": {
+      "path": "/ent/v2/tasks/{id}/creations",
+      "idPath": "task_id",
+      "queryIDPath": "id",
+      "statusPath": "state",
+      "pendingValues": [
+        "created",
+        "queueing",
+        "processing"
+      ],
+      "successValues": [
+        "success"
+      ],
+      "failureValues": [
+        "failed"
+      ]
+    }
+  },
+  "usageGuide": {
+    "summary": "Synthetic Vidu contract fixture for offline validation.",
+    "useCases": [
+      "test"
+    ],
+    "inputs": "Synthetic image URLs and prompt",
+    "outputs": "Mock task response",
+    "instructions": [
+      "Use only with the in-memory test transport."
+    ],
+    "limitations": [
+      "Test contract, not a current provider capability or account entitlement claim."
+    ],
+    "documentationURLs": [],
+    "requestExample": {
+      "model": "viduq3-pro",
+      "prompt": "从首帧自然过渡到尾帧，鸟向右平稳飞行，镜头跟随。",
+      "duration": 5,
+      "resolution": "720p",
+      "audio": false,
+      "off_peak": false,
+      "watermark": false,
+      "images": [
+        "https://example.invalid/startend2video-1.jpeg",
+        "https://example.invalid/startend2video-2.jpeg"
+      ],
+      "is_rec": false
+    }
+  }
+}

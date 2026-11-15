@@ -1,0 +1,16 @@
+{
+  "alias": "text-model",
+  "name": "示例文本模型",
+  "modelID": "replace-with-provider-model-id",
+  "modality": "text",
+  "status": "candidate",
+  "callTemplate": {
+    "endpointAlias": "primary",
+    "method": "POST",
+    "path": "/chat/completions",
+    "modelIDBodyField": "model",
+    "requestFields": ["messages"],
+    "staticHeaders": {},
+    "isAsync": false
+  }
+}

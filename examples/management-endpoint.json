@@ -1,0 +1,5 @@
+{
+  "alias": "primary",
+  "name": "主要接口",
+  "baseURL": "https://example.invalid/v1"
+}

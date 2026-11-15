@@ -1,0 +1,13 @@
+{
+  "model": "viduq3-turbo",
+  "prompt": "保持参考图中宇航员的服装和外观一致，宇航员轻轻挥手，镜头稳定。",
+  "duration": 5,
+  "resolution": "720p",
+  "audio": false,
+  "off_peak": false,
+  "watermark": false,
+  "images": [
+    "https://example.invalid/image2video.png"
+  ],
+  "aspect_ratio": "16:9"
+}

@@ -1,0 +1,10 @@
+{
+  "model": "viduq3-turbo",
+  "prompt": "一个白瓷杯放在木桌上，窗边自然光，镜头缓慢推进，画面稳定。",
+  "duration": 5,
+  "resolution": "720p",
+  "audio": false,
+  "off_peak": false,
+  "watermark": false,
+  "aspect_ratio": "16:9"
+}

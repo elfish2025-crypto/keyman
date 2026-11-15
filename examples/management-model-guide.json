@@ -1,0 +1,14 @@
+{
+  "usageGuide": {
+    "summary": "根据用户提供的文字完成摘要、改写和问答。",
+    "useCases": ["摘要", "改写", "问答"],
+    "inputs": "messages 消息数组，按当前模型的接口契约填写。",
+    "outputs": "JSON 文本回复；具体响应字段应按已接入接口核对。",
+    "instructions": ["按任务修改请求示例。", "执行 preflight；获得调用授权后执行 call。"],
+    "limitations": ["此文件是说明填写模板，使用前需核对所选模型确实支持 messages 请求。"],
+    "documentationURLs": [],
+    "requestExample": {
+      "messages": [{"role": "user", "content": "请用一句话介绍你能完成的任务。"}]
+    }
+  }
+}
