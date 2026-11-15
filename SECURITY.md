@@ -1,15 +1,15 @@
-# 安全
+# Security
 
-Keyman 是供可信用户和本机 Agent 使用的凭证管理工具，不是隔离恶意 Agent 的沙箱。
+Keyman is a credential manager for trusted users and local agents. It is not a sandbox for isolating malicious agents.
 
-- 凭证使用 macOS Keychain；配置、指南和调用结果仍可能包含个人信息，应按私有数据保管。
-- MCP 通过本机 stdio 工作，没有独立用户认证层。仅将它连接到你信任的客户端。
-- MCP `authorized: true` 是调用方对已有授权的声明，不是人类审批、预算限制或供应商购买流程。
-- 有配置写权限的客户端能够改变目标接口。Keyman 的已配置主机约束不能代替对客户端和接口的信任。
-- CLI `run` 会向子进程传递完整凭证；该程序可以自行读取或转发凭证。MCP 不提供此工具。
-- 供应商响应中的当前凭证会被脱敏，但任意日志、远程 URL 和模型内容不能保证自动去除全部敏感信息。
-- 清除或删除本机凭证不撤销供应商端 Key。泄露时应在供应商平台撤销并更换。
+- Credentials use macOS Keychain. Configuration, guides, and call results may still contain personal information and should be treated as private data.
+- MCP runs over local stdio without a separate user authentication layer. Connect it only to trusted clients.
+- MCP's `authorized: true` is the caller's declaration of existing authorization, not a human approval flow, spending limit, or service purchase mechanism.
+- Clients with configuration write access can change destination endpoints. Restricting requests to configured hosts does not replace trust in those clients and endpoints.
+- CLI `run` passes the full credential to a child process, which can read or forward it. MCP does not expose this tool.
+- The credential used for a call is redacted from provider responses. This does not guarantee removal of all sensitive data from arbitrary logs, remote URLs, or model content.
+- Clearing or deleting a local credential does not revoke the provider-side key. Revoke and replace exposed credentials through the provider.
 
-请通过仓库的 **Security → Report a vulnerability** 私下报告安全问题。不要在公开 Issue 中粘贴密钥、真实账户配置或未脱敏复现材料。若私密报告入口不可用，可先提交不包含细节的 Issue，请维护者提供私密联系渠道。
+Report vulnerabilities privately through the repository's **Security → Report a vulnerability** page. Do not post keys, real account configurations, or unredacted reproduction materials in public issues. If private reporting is unavailable, open an issue without sensitive details to request a private contact channel.
 
-当前维护线为最新的 0.7.x。项目尚未承诺固定的修复时限或长期支持版本。
+The maintained application line is the latest 0.7.x version. The project does not currently promise fixed response times or long-term support releases.

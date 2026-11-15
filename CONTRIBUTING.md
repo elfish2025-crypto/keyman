@@ -1,16 +1,16 @@
-# 参与开发
+# Contributing
 
-欢迎提交 Issue 和 Pull Request。说明触发方式、期望行为和实际结果；日志需先脱敏。
+Issues and pull requests are welcome. Describe the trigger, expected behavior, and actual result. Redact logs before sharing them.
 
-1. 使用 macOS 14+、Swift 6+ 和 Python 3.10+。
-2. 从 `main` 创建分支，保持修改范围明确。
-3. 运行 `./scripts/test.sh` 和 `python3 -m unittest discover -s Tests/Installation`；涉及打包时再运行 `./scripts/package-app.sh`。
-4. PR 中说明变更原因、验证结果和已知限制。界面改动附使用合成数据的截图。
+1. Use macOS 14+, Swift 6+, and Python 3.10+.
+2. Create a branch from `main` and keep changes focused.
+3. Run `./scripts/test.sh` and `python3 -m unittest discover -s Tests/Installation`. For packaging changes, also run `./scripts/package-app.sh`.
+4. Explain the reason for the change, validation results, and known limitations in your PR. For UI changes, include screenshots using synthetic data.
 
-不要提交个人配置、调用回执、签名媒体 URL、真实账号资源编号或密钥。测试应使用临时目录、合成凭证和模拟传输。普通测试不得使用开发者的真实钥匙串或发送付费生成请求。
+Do not commit personal configuration, call receipts, signed media URLs, real account resource IDs, or secrets. Tests should use temporary directories, synthetic credentials, and mocked transports. Routine tests must not use a developer's real Keychain or submit paid generation requests.
 
-供应商适配需附官方接口依据，区分参数预检与真实请求成功。不要把本机某个账号的开通状态当成产品能力。
+Provider adapters should cite official API documentation and distinguish parameter validation from successful live calls. Do not treat access granted to one local account as a general product capability.
 
-配置、凭证及任务状态改变需保持并发检查和失败恢复语义；查询工具不应因新增功能而开始读取凭证或调用供应商。
+Changes to configuration, credentials, and task state must preserve concurrency checks and failure recovery. Adding a feature must not silently make metadata queries read credentials or call providers.
 
-提交贡献即同意以项目的 MIT 许可证提供这些贡献。
+By contributing, you agree to license your contributions under this project's MIT license.

@@ -1,22 +1,31 @@
 # Changelog
 
+## 0.7.6 — 2026-11-15
+
+Documentation-only repository update. The application and MCP server remain at version 0.7.5.
+
+- Translate the README, usage guides, security policy, contribution guide, changelog, and release validation record into English.
+- Preserve command syntax, configuration fields, links, and the Chinese filenames and field names required by the legacy importer.
+- Clarify that the application interface and CLI messages are still in Chinese.
+- No changes to application behavior, credentials, configuration schema, or test fixtures.
+
 ## 0.7.5 — 2026-11-15
 
-- 为 UI 异步测试辅助函数明确主线程隔离，修复 GitHub macOS / Xcode 工具链下的 Swift 并发编译错误。
-- 应用及 MCP 版本同步为 0.7.5；运行时功能与配置格式不变。
-- 保留首次公开快照的 `v0.7.4` 标签，不重写已推送历史。
+- Explicitly isolate the UI asynchronous test helper to the main actor, fixing a Swift concurrency compilation error in the GitHub macOS/Xcode environment.
+- Synchronize application and MCP versions at 0.7.5; runtime behavior and configuration formats are unchanged.
+- Preserve the initial public snapshot tag `v0.7.4` without rewriting published history.
 
 ## 0.7.4 — 2026-11-15
 
-首次公开源码版本，以本地 0.7.3 工作区为基础建立独立公开历史。
+Initial public source snapshot, starting a separate public history from the local 0.7.3 working tree.
 
-- 提供 macOS GUI、CLI、30 个 stdio MCP 工具及核心测试。
-- 导入入口改为选择文件夹，凭证迁移不再预填开发者路径。
-- 将合成测试数据和默认账号名称改为通用示例。
-- 同步应用与 MCP 版本号，测试入口支持完整 Xcode 和独立 Command Line Tools。
-- 增加 MIT 许可证、通用安装与配置说明、贡献指南、安全边界和 macOS CI。
-- 不分发开发者的账号、模型目录、调用记录、历史内部文档或原仓库 Git 历史。
+- Include the macOS GUI, CLI, 30 stdio MCP tools, and core tests.
+- Replace the hard-coded import directory with a folder picker, and stop prefilling the developer's migration path.
+- Use generic account names and synthetic test data.
+- Synchronize application and MCP version metadata; support both full Xcode and standalone Command Line Tools in the test entry point.
+- Add the MIT license, installation and configuration guides, contribution guidelines, security boundaries, and macOS CI.
+- Exclude the developer's accounts, model catalog, call records, internal documents, and original Git history.
 
-兼容性：配置 schema 和 CLI/MCP 工具接口保持原有实现；旧格式导入缺少名称时使用通用默认名称。处于 0.x 阶段，尚未承诺稳定公共 API。
+Compatibility: the configuration schema and CLI/MCP interfaces retain their previous implementation. Legacy imports use generic fallback names when names are absent. The project is pre-1.0 and does not yet promise a stable public API.
 
-安装方式为源码构建；未提供 Developer ID 签名或 Apple 公证。公开版本的自动化测试不能代替真实供应商调用和成品验收。
+Installation is from source. No Developer ID signature or Apple notarization is provided. Automated tests do not replace live provider calls or output quality review.

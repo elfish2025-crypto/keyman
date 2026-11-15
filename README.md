@@ -1,24 +1,24 @@
 # Keyman
 
-**为本机 AI Agent 管理 API 凭证、账号、接口和模型。**
+**Manage API credentials, accounts, endpoints, and models for local AI agents.**
 
-Keyman 是一个 macOS 应用，同时提供 CLI 和 30 个 stdio MCP 工具。你在本机保存 API Key，Agent 按账号与模型调用服务；常规查询和模型说明不返回完整凭证。
+Keyman is a macOS app with a CLI and 30 stdio MCP tools. Store API keys locally and let agents call services through configured accounts and models. Routine queries and model guides do not return full credentials.
 
-Local API credential and model manager for macOS, with a native app, CLI, and stdio MCP server. Credentials live in macOS Keychain. MIT licensed.
+Credentials are stored in macOS Keychain. The project is licensed under MIT.
 
-## 能做什么
+## Features
 
-- 用一个界面管理多个供应商的账号、认证方式、接口和模型。
-- 为模型维护用途、输入输出、官方资料、请求示例和异步任务查询规则。
-- 让 Agent 按用途搜索模型，阅读指南，预检请求，再在授权范围内调用。
-- 通过 macOS 钥匙串保存凭证，支持替换、清除、迁移及状态查询。
-- 在默认输出规则下检查图片与视频的常见可见文字水印；保留待检查状态，避免自动重复提交生成任务。
+- Manage multiple providers, accounts, authentication methods, endpoints, and models in one app.
+- Maintain model guides with use cases, inputs, outputs, official references, request examples, and asynchronous task query rules.
+- Let agents discover models, read guides, preflight requests, and make authorized calls.
+- Store, replace, clear, and migrate credentials through macOS Keychain.
+- Check images and videos for common visible text watermarks under the default output policy. Keep pending inspection states separate from failed requests to avoid duplicate generation.
 
-支持配置通用 REST 接口，并有火山方舟、百炼、火山语音及 Vidu 的部分流程适配。支持范围取决于具体接口契约；供应商权限、计费和模型可用性由供应商决定。仓库不附带任何真实账号、Key 或付费调用额度。
+Keyman supports configurable REST endpoints and selected workflows for Volcengine Ark, Alibaba Cloud Model Studio (Bailian), Volcengine Speech, and Vidu. Support depends on the specific API contract. Providers control account permissions, billing, and model availability. This repository includes no real accounts, API keys, or paid service credits.
 
-## 从源码安装
+## Build and install
 
-需要 **macOS 14+、Swift 6+、Python 3.10+**，以及提供这些版本的 Apple Command Line Tools 或 Xcode。GUI 当前为中文。此版本处于 0.x 阶段。
+Requires **macOS 14+, Swift 6+, and Python 3.10+**, with compatible Apple Command Line Tools or Xcode. The app interface and CLI messages are currently in Chinese. Keyman is a pre-1.0 project.
 
 ```bash
 git clone https://github.com/elfish2025-crypto/keyman.git
@@ -30,17 +30,17 @@ python3 -m unittest discover -s Tests/Installation
 open "$HOME/Applications/Keyman.app"
 ```
 
-打包输出为 `dist/Keyman.app.zip`；安装脚本将应用放入 `~/Applications`，建立 `~/.local/bin/keyman` 链接。若已安装 Keyman，先退出应用及使用它的 MCP 进程。安装器会归档被替换版本；账号配置与凭证不作为安装包内容。
+Packaging produces `dist/Keyman.app.zip`. The installer places the app in `~/Applications` and creates the `~/.local/bin/keyman` symlink. If Keyman is already installed, quit the app and any MCP processes using it first. The installer archives the replaced version. Account configuration and credentials are not included in the package.
 
-当前使用本机 ad-hoc 签名，没有 Apple Developer ID 签名或公证。源码构建是本次公开版本的安装方式；重新构建后，macOS 可能再次要求钥匙串授权。
+Builds use local ad-hoc signing; no Apple Developer ID signature or notarization is provided. Build from source to install this release. macOS may ask for Keychain authorization again after a rebuild.
 
-以下命令假定 `~/.local/bin` 已加入 PATH，否则使用 `"$HOME/.local/bin/keyman"`。
+The commands below assume `~/.local/bin` is on your PATH. Otherwise, use `"$HOME/.local/bin/keyman"`.
 
-## 第一次使用
+## Getting started
 
-打开应用，点击“添加账号”，选择供应商或自定义 REST，填写自己的接口与认证方式。Key 可以稍后设置。再添加模型及用途指南。所有账号、接口和模型也能用 CLI 或 MCP 管理。
+Open the app and choose **Add account** (currently labeled `添加账号`). Select a provider or custom REST endpoint, then enter your endpoint and authentication settings. You can add the API key later. Add a model and its usage guide next. Accounts, endpoints, and models can also be managed through the CLI or MCP.
 
-仓库中的示例使用 `example.invalid` 和候选模型，供理解配置结构，不能直接调用真实服务：
+The repository examples use `example.invalid` and candidate models to illustrate configuration structure. They cannot call a real service as supplied:
 
 ```bash
 keyman profile add --file examples/management-profile.json --dry-run
@@ -51,49 +51,49 @@ keyman model update example-account text-model --file examples/management-model-
 keyman guide example-account text-model --json
 ```
 
-在调用前，按供应商官方资料补全真实接口、认证方式、模型编号和请求示例。配置变更会使旧示例失效；重新提交 `usageGuide.requestExample` 表示已重新核对。
+Before making a call, configure the actual endpoint, authentication, model ID, and request example using the provider's official documentation. Changes to the API contract invalidate old examples. Resubmitting `usageGuide.requestExample` declares that the example has been reviewed against the current configuration.
 
-完整 Key 通过应用的安全输入框，或本机私有文件/标准输入保存。不要把它写进命令参数、模型示例、Git 仓库或聊天记录：
+Store full keys through the app's secure input field, a private local file, or standard input. Do not put them in command-line arguments, model examples, Git repositories, or chat messages:
 
 ```bash
 keyman key set example-account --key-file /absolute/private/path/key.txt
 keyman key status example-account
 ```
 
-## Agent 调用流程
+## Agent workflow
 
 ```bash
-keyman catalog 配音 --json
+keyman catalog speech --json
 keyman guide my-account my-model --json
 keyman example my-account my-model > request.json
-# 根据本次任务编辑 request.json
+# Edit request.json for the current task.
 keyman preflight my-account my-model --body @request.json
-# 获得本次任务及费用授权后执行：
+# Run only with authorization for the task and its costs:
 keyman call my-account my-model --body @request.json
 ```
 
-`catalog`、`guide`、`example` 和 `preflight` 不调用供应商。`requestReady` 只表示本机资料齐备，不证明凭证有效、服务开通或结果合格。`call` 会发起真实请求，可能计费。
+`catalog`, `guide`, `example`, and `preflight` do not call the provider. `requestReady` means the local configuration is complete; it does not verify credentials, service access, or output quality. `call` sends a real request and may incur charges.
 
-异步请求返回任务编号后，用 `keyman task my-account my-model TASK_ID --wait-seconds 60` 查询同一个任务。退出码 `3` 表示等待或成品检查未完成，不是重新生成的信号。网络超时也不能证明供应商没有受理。
+For asynchronous requests, save the task ID and query the same task with `keyman task my-account my-model TASK_ID --wait-seconds 60`. Exit code `3` means the task is pending or output inspection is incomplete. It is not a signal to generate again. A network timeout also does not prove that the provider rejected or never received the request.
 
-连接 Agent 的配置及工具清单见 [MCP 文档](docs/mcp.md)。业务管理见 [管理命令](docs/management.md) 和 [Agent 管理范围](docs/agent-management.md)。旧格式资料导入见 [导入说明](docs/import.md)。
+See [MCP setup and tools](docs/mcp.md), [management commands](docs/management.md), [agent capabilities](docs/agent-management.md), and [legacy import](docs/import.md).
 
-## 凭证与输出边界
+## Credentials and output checks
 
-凭证保存在 macOS Keychain 的统一条目 `com.local.keyman.vault / credentials-v1`。账号和模型配置位于 `~/Library/Application Support/Keyman/config.json`，调用及检查记录位于该目录的 `Calls/`。这些是个人数据，不应提交到仓库。
+Credentials are stored in the unified macOS Keychain item `com.local.keyman.vault / credentials-v1`. Account and model configuration lives at `~/Library/Application Support/Keyman/config.json`; call and inspection records are stored in its `Calls/` directory. Treat these as private data and keep them out of Git.
 
-系统授权需要用户在 macOS 窗口完成。清除本机 Key 不会撤销供应商端凭证。不要用旧版本应用修改新版本配置。完整安全边界和报告方式见 [SECURITY.md](SECURITY.md)。
+Users must complete system authorization in the macOS dialog. Clearing a local key does not revoke it at the provider. Do not use an older app version to modify a newer configuration. See [SECURITY.md](SECURITY.md) for the security boundaries and reporting process.
 
-默认要求无可见水印：未知或不可避免的水印能力会在请求前阻止调用。能力结论应有具体模型和接口依据。图片使用 Vision OCR；视频检查首尾及约每两秒的抽样帧，支持最长 180 秒、单文件最大 200 MiB。它可能漏检图形标记、短暂水印或模糊文字，也不检查隐形水印；通过自动检查不等于完成画面、声音或内容验收。
+The default policy requires no visible watermark. Unknown or unavoidable watermark behavior blocks the request before submission. Capability claims must be supported by evidence for the specific model and endpoint. Image checks use Vision OCR. Video checks inspect the first and last frames and sample roughly every two seconds, with limits of 180 seconds and 200 MiB per file. They may miss graphical marks, brief watermarks, or blurred text, and do not detect invisible watermarks. Passing automated inspection does not establish visual, audio, or content quality.
 
-CLI 的 `run` 兼容模式会将凭证放入所启动程序的环境变量，因此只能运行可信程序。严格输出规则下，该模式需要明确选择 `--allow-unchecked-output`；MCP 不开放通用 shell 或 Key 导出工具。
+The CLI's `run` compatibility mode passes credentials to the child process through environment variables, so use it only with trusted programs. Under the strict output policy, it requires an explicit `--allow-unchecked-output` override. MCP exposes neither a general shell nor a key export tool.
 
-## 开发
+## Development
 
-`Sources/KeymanCore` 实现配置、凭证、请求及管理逻辑；`KeymanCLI` 提供 CLI 和 MCP；`KeymanAppSupport` 与 `KeymanApp` 提供 SwiftUI 界面及应用入口。
+`Sources/KeymanCore` implements configuration, credentials, requests, and management logic. `KeymanCLI` provides the CLI and MCP server. `KeymanAppSupport` and `KeymanApp` provide the SwiftUI interface and application entry point.
 
-项目没有第三方 Swift Package 依赖。测试使用合成凭证和模拟服务；请勿向测试夹具放入真实 Key。提交方式见 [CONTRIBUTING.md](CONTRIBUTING.md)，版本变化见 [CHANGELOG.md](CHANGELOG.md)。
+There are no third-party Swift Package dependencies. Tests use synthetic credentials and mocked services; never add real keys to fixtures. See [CONTRIBUTING.md](CONTRIBUTING.md) and the [changelog](CHANGELOG.md).
 
-## 许可证
+## License
 
-[MIT](LICENSE) © 2026 elfish2025-crypto。项目与各 API 供应商无隶属关系。
+[MIT](LICENSE) © 2026 elfish2025-crypto. This project is not affiliated with the API providers.

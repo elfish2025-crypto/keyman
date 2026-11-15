@@ -1,21 +1,25 @@
-# 0.7.4 发布验证
+# Release validation
 
-日期：2026-11-15。
+Date: 2026-11-15.
 
-发布范围为独立选取的源码、测试、通用示例和文档；不继承本地开发仓库历史。未包含真实账号配置、凭证、供应商调用回执或内部创作资料。
+The public repository contains selected source code, tests, generic examples, and documentation. It does not inherit the private development repository's Git history or include real account configuration, credentials, provider call receipts, or internal creative materials.
 
-## 本地检查
+## 0.7.4: local checks
 
-- Swift 6.3 / macOS arm64：全量运行覆盖 160 个测试。首次运行中，7 个 Vidu 测试函数的 29 个参数化案例因资源目录尚未复制而失败；其余通过。补齐合成夹具并通过 Bundle 加载后，针对 Vidu、任务查询及脱敏涉及的百炼导入运行 15 个测试，全部通过。未将首次失败记录为全量一次通过。
-- Python 安装器测试：7 项通过。
-- Release 构建、ad-hoc 签名验证、ZIP 归档内容校验：通过。未安装该版本或覆盖现用应用。
-- Gitleaks 8.30.1 对待公开文件扫描：未发现密钥。测试数据中的账号工作空间编号已替换为合成值。扫描不构成无漏洞保证。
-- 本地文档链接检查：通过。
+- **Swift 6.3 / macOS arm64:** the full run covered 160 tests. Seven Vidu test functions, comprising 29 parameterized cases, initially failed because their resource directory had not yet been copied; the other tests passed. After adding synthetic fixtures loaded through the resource bundle, all 15 targeted Vidu, task-query, and affected Bailian import tests passed. The initial run was not recorded as an all-pass run.
+- **Python installer tests:** all 7 passed.
+- **Release build, ad-hoc signature verification, and ZIP content verification:** passed. The build was not installed over the active application.
+- **Gitleaks 8.30.1:** no secrets detected in the reviewed public files. A specific workspace ID in test data was replaced with a synthetic value. This scan is not a guarantee that the software has no vulnerabilities.
+- **Local documentation links:** passed.
 
-自动化测试使用合成凭证与模拟传输；本次未提交供应商生成请求。目录选择 UI 已编译，未完成手工交互验收；macOS 系统钥匙串授权与真实凭证替换未在本次发布验证中操作。
+Automated tests used synthetic credentials and mocked transports. No provider generation requests were submitted. The folder picker compiled but was not manually exercised. System Keychain authorization and real credential replacement were not performed during this release validation.
 
-GitHub CI 对公开提交重新执行 Swift 测试、安装器测试及应用打包。远端结果以该提交的 Actions 记录为准。
+## 0.7.5: Xcode compatibility fix
 
-## 0.7.5 兼容修复
+The first GitHub CI run found a Swift concurrency compilation error in the UI test helper: its asynchronous closure lacked explicit actor isolation, allowing a generic return value to cross an isolation boundary. The closure was marked `@MainActor`, matching its UI test context, without an unsafe concurrency exemption. All 16 affected App tests passed locally; unaffected checks were reused.
 
-首次 GitHub CI 在 UI 测试辅助函数中发现 Swift 并发编译错误：异步闭包没有明确主线程隔离，泛型返回值可能跨隔离域。现将该闭包显式标记为 `@MainActor`，与 UI 测试调用环境一致；未使用不安全并发豁免。复用以上未受影响的检查，并针对 App 测试本地复验；远端 CI 对修复后的提交重新执行全部测试和打包。
+[GitHub CI for commit `8657ec3`](https://github.com/elfish2025-crypto/keyman/actions/runs/43717745640) then passed the complete 160-test Swift suite, all 7 installer tests, and application packaging with signature and archive verification in a fresh macOS environment.
+
+## 0.7.6: English documentation
+
+This update changes Markdown documentation only. The application, CLI messages, MCP implementation, examples, and fixtures remain unchanged. Validation checks local links, JSON code blocks, command examples, and the changed-file list. Runtime test results from 0.7.5 remain applicable; translating documentation does not imply new live provider or UI verification.

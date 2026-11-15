@@ -1,8 +1,8 @@
-# 旧格式资料导入
+# Legacy import
 
-导入器兼容本项目早期使用的特定文件结构，不是任意 Markdown、CSV 或其他密码管理器的通用导入器。新用户可以直接从 GUI 或管理命令创建账号。
+The importer supports a specific directory structure used by early versions of this project. It is not a general importer for arbitrary Markdown, CSV, or other password managers. New users can create accounts directly through the GUI or management commands.
 
-点击“导入”后选择资料根目录，先查看账号预览，再确认保存。命令行等价入口：
+Choose **Import** (currently labeled `导入`), select the source directory, review the preview, and confirm the import. Equivalent CLI commands:
 
 ```bash
 keyman import-preview /absolute/path/to/api-records --json
@@ -10,8 +10,8 @@ keyman import-commit /absolute/path/to/api-records --json
 keyman import-check /absolute/path/to/api-records --json
 ```
 
-当前解析要求根目录中有 `火山方舟/` 和 `阿里百炼/`。具体文件名、字段及**合成凭证**示例见 [Legacy 测试夹具](../Tests/KeymanCoreTests/Fixtures/Legacy)。这些夹具只能用于测试，不是真实服务配置。
+The parser currently requires `火山方舟/` and `阿里百炼/` under the source root. These Chinese directory names and source field names are part of the legacy format and must remain unchanged. See the [legacy fixtures](../Tests/KeymanCoreTests/Fixtures/Legacy) for exact filenames, fields, and **synthetic credentials**. The fixtures are for testing, not live service configuration.
 
-`import-preview` 读取所选资料，不访问钥匙串或调用供应商。`import-commit` 保存并回读核对凭证；不同 Key 会阻止覆盖，相同 Key 保留已有配置。`import-check` 比较来源与已保存凭证，不发送供应商请求。
+`import-preview` reads the selected files without accessing Keychain or calling providers. `import-commit` saves credentials and reads them back for verification: a different key stops the import instead of overwriting the existing credential; a matching key preserves existing configuration. `import-check` compares source credentials with stored credentials without calling providers.
 
-旧凭证库迁移使用 `keyman vault migrate`。只有确认来源文件里的 Key 仍是当前版本时，才能使用 `--source /absolute/path --source-current`。不要用旧导入文件覆盖已轮换的凭证。
+Use `keyman vault migrate` to migrate older credential storage. Use `--source /absolute/path --source-current` only after confirming that the source files contain the current keys. Do not overwrite rotated credentials with old import files.
