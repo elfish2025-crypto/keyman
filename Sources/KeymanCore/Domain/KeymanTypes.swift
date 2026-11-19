@@ -180,6 +180,8 @@ public struct ProviderProfile: Codable, Equatable, Identifiable, Sendable {
     public var previousAliases: [String]
     public var credentialRevision: Int
     public var usesCredentialVault: Bool
+    /// Optional link to the provider's balance page; opened in the browser only.
+    public var balanceURL: URL?
 
     public init(
         id: UUID,
@@ -200,7 +202,8 @@ public struct ProviderProfile: Codable, Equatable, Identifiable, Sendable {
         isEnabled: Bool = true,
         previousAliases: [String] = [],
         credentialRevision: Int = 0,
-        usesCredentialVault: Bool = false
+        usesCredentialVault: Bool = false,
+        balanceURL: URL? = nil
     ) {
         self.id = id
         self.alias = alias
@@ -221,12 +224,13 @@ public struct ProviderProfile: Codable, Equatable, Identifiable, Sendable {
         self.previousAliases = previousAliases
         self.credentialRevision = credentialRevision
         self.usesCredentialVault = usesCredentialVault
+        self.balanceURL = balanceURL
     }
 
     private enum CodingKeys: String, CodingKey {
         case id, alias, name, provider, project, region, workspaceName, workspaceID, endpoints
         case authentication, notes, sourceFiles, models, lastTestedAt, lastTestSucceeded, isEnabled, previousAliases, credentialRevision
-        case usesCredentialVault
+        case usesCredentialVault, balanceURL
     }
     public init(from decoder: Decoder) throws {
         let c = try decoder.container(keyedBy: CodingKeys.self)
@@ -249,11 +253,12 @@ public struct ProviderProfile: Codable, Equatable, Identifiable, Sendable {
         previousAliases = try c.decodeIfPresent([String].self, forKey: .previousAliases) ?? []
         credentialRevision = try c.decodeIfPresent(Int.self, forKey: .credentialRevision) ?? 0
         usesCredentialVault = try c.decodeIfPresent(Bool.self, forKey: .usesCredentialVault) ?? false
+        balanceURL = try c.decodeIfPresent(URL.self, forKey: .balanceURL)
     }
 }
 
 public struct KeymanConfiguration: Codable, Equatable, Sendable {
-    public static let currentSchemaVersion = 5
+    public static let currentSchemaVersion = 6
     public var schemaVersion: Int = currentSchemaVersion
     public var profiles: [ProviderProfile]
     public var outputPolicy: OutputPolicy

@@ -8,6 +8,7 @@ public struct KeymanRootView: View {
     @State private var importSelection: ImportSelection?
     @State private var showingOutputPolicy = false
     @State private var showingVault = false
+    @State private var balanceSetupProfile: ProviderProfile?
     @State private var searchText = ""
     @Environment(\.scenePhase) private var scenePhase
 
@@ -30,6 +31,7 @@ public struct KeymanRootView: View {
                                             Text(profile.name).font(.headline)
                                             if !profile.isEnabled { Text("已停用").font(.caption).foregroundStyle(.orange) }
                                             Spacer()
+                                            BalanceLinkButton(profile: profile) { balanceSetupProfile = profile }
                                             credentialLabel(profile.id)
                                         }
                                         Text(profileSummary(profile))
@@ -82,6 +84,10 @@ public struct KeymanRootView: View {
             }
             .sheet(isPresented: $showingAddProfile) {
                 ProfileEditorView(model: model)
+                    .frame(width: 680, height: 700)
+            }
+            .sheet(item: $balanceSetupProfile) { profile in
+                ProfileEditorView(model: model, editing: profile)
                     .frame(width: 680, height: 700)
             }
             .sheet(item: $importSelection) { selection in

@@ -76,6 +76,14 @@ keyman call my-account my-model --body @request.json
 
 For asynchronous requests, save the task ID and query the same task with `keyman task my-account my-model TASK_ID --wait-seconds 60`. Exit code `3` means the task is pending or output inspection is incomplete. It is not a signal to generate again. A network timeout also does not prove that the provider rejected or never received the request.
 
+### Agent skill
+
+`skills/keyman/SKILL.md` is a Claude Code skill that teaches an agent this workflow (list → catalog → guide → example → preflight → ask → call → task). It triggers on phrases such as "用 Keyman 查一下" or "用某服务商的某模型做某事，去 Keyman 拿密钥". To install it for your user account:
+
+```bash
+mkdir -p ~/.claude/skills && ln -s "$PWD/skills/keyman" ~/.claude/skills/keyman
+```
+
 See [MCP setup and tools](docs/mcp.md), [management commands](docs/management.md), [agent capabilities](docs/agent-management.md), and [legacy import](docs/import.md).
 
 ## Credentials and output checks

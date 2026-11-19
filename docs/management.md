@@ -2,6 +2,18 @@
 
 The GUI and CLI share management logic, configuration, and Keychain storage. Management documents contain no secrets. Commands return JSON, with exit code `0` for success and `1` for failure. Management writes support `--dry-run`, which validates the proposed change without modifying configuration, reading Keychain, or calling providers.
 
+## Balance page link
+
+Each account can store an optional `balanceURL`: the provider's own balance or billing page. The GUI shows a balance button on every account row that opens the link in the default browser. Keyman never requests the page, sends credentials to it, or reads a balance.
+
+```bash
+keyman profile update my-account --file balance.json --dry-run   # {"balanceURL": "https://example.com/billing"}
+keyman profile update my-account --file clear.json               # {"balanceURL": null}
+keyman list --json                                               # "balanceURL" is the effective link
+```
+
+Only `https://` links without embedded credentials are accepted. When an account has no link, Keyman falls back to a built-in default matched on the endpoint host, limited to pages confirmed in official documentation: Alibaba Cloud billing (Bailian and `*.aliyuncs.com`), Tencent Cloud Expense Center (`*.tencentmaas.com`, `*.tencent.com`, `*.tencentcloudapi.com`) and MiniMax (`minimaxi.com`, `minimax.io`). Volcengine and Vidu have no confirmed default, so those accounts show a prompt to add a link. This field requires configuration schema 6; the first save by this version backs up the previous file.
+
 ## Move a model between accounts
 
 ```bash

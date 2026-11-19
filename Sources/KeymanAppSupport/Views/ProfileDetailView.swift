@@ -80,6 +80,9 @@ struct ProfileDetailView: View {
                 if let project = profile.project { LabeledContent("项目", value: project) }
                 if let region = profile.region { LabeledContent("区域", value: region) }
                 LabeledContent("Key", value: model.credentialLabel(profile.id))
+                LabeledContent("余额页") {
+                    BalanceLinkButton(profile: profile, showsTitle: true) { showingEditProfile = true }
+                }
             }
             Section("接口与认证") {
                 if profile.endpoints.isEmpty { Text("尚未配置接口，请在“编辑账号”中补充。").foregroundStyle(.secondary) }
