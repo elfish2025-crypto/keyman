@@ -26,6 +26,8 @@ public enum ConfigurationValidator {
                 throw KeymanError.invalidRequest("账号名称不能为空。")
             }
             try ManagementValidation.authentication(profile.authentication, required: false)
+            if let balanceURL = profile.balanceURL { try BalanceLink.validate(balanceURL) }
+            if let group = profile.group { try ProviderGrouping.validate(group) }
             try validateAlias(profile.alias)
             guard profile.credentialRevision >= 0, profile.credentialRevision < Int.max else {
                 throw KeymanError.invalidRequest("凭证修订状态无效。")

@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+
+- Add an optional per-account `balanceURL` and a balance button on each account row that opens the provider's balance page in the browser. Keyman does not load the page or read a balance.
+- `keyman list --json` reports the effective link. Built-in defaults cover Alibaba Cloud, Tencent Cloud and MiniMax only; other accounts supply their own link.
+- Group the account list by vendor with an optional per-account `group` (inferred from the provider type and endpoint host when unset). `keyman list --json` reports the effective group.
+- Configuration schema 5 → 6. The first save backs up the previous file, and older applications will not manage the new format.
+
 ## 0.7.6 — 2026-11-15
 
 Documentation-only repository update. The application and MCP server remain at version 0.7.5.

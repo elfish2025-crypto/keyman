@@ -42,6 +42,10 @@ enum CLIOutput {
         var workspaceName: String?
         var modelCount: Int
         var isEnabled: Bool
+        /// Effective balance page: the account's own link, else a documented default.
+        var balanceURL: URL?
+        /// Effective display group: the account's own group, else inferred from its endpoints.
+        var group: String
     }
 
     private struct ImportProfileSummary: Codable {
@@ -64,7 +68,9 @@ enum CLIOutput {
                 region: $0.region,
                 workspaceName: $0.workspaceName,
                 modelCount: $0.models.count,
-                isEnabled: $0.isEnabled
+                isEnabled: $0.isEnabled,
+                balanceURL: BalanceLink.resolve($0)?.url,
+                group: ProviderGrouping.group(for: $0)
             )
         }
         if json { return encoded(Success(data: summaries)) }

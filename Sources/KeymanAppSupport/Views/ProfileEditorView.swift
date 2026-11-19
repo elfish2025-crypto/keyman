@@ -30,6 +30,8 @@ struct ProfileEditorView: View {
     @State private var workspaceName = ""
     @State private var workspaceID = ""
     @State private var notes = ""
+    @State private var balanceURLText = ""
+    @State private var groupText = ""
     @State private var authHeader = "Authorization"
     @State private var authPrefix = "Bearer"
     @State private var environmentVariable = "ARK_API_KEY"
@@ -48,6 +50,7 @@ struct ProfileEditorView: View {
                 scopeSection
                 endpointsSection
                 authenticationSection
+                balanceSection
                 Section("备注") {
                     TextEditor(text: $notes).frame(minHeight: 70).accessibilityLabel("账号备注")
                 }
@@ -92,6 +95,7 @@ struct ProfileEditorView: View {
                 Text("其他 / 自定义 REST API").tag(ProviderKind.customREST)
             }
             TextField("名称", text: $name)
+            TextField("分组（可选，如 火山引擎；留空自动判断）", text: $groupText)
             TextField("账号标识（供 Agent 使用）", text: $alias).autocorrectionDisabled()
             if editing != nil {
                 Text("更改标识后，Agent 的命令需使用新标识；已保存的 Key 与模型保持关联。")
@@ -154,6 +158,14 @@ struct ProfileEditorView: View {
         }
     }
 
+    private var balanceSection: some View {
+        Section("余额页") {
+            TextField("余额页链接（可选，https）", text: $balanceURLText).autocorrectionDisabled()
+            Text("点击账号旁的余额按钮时，用默认浏览器打开这个页面。Keyman 不访问该页面，也不会带上任何凭证。留空则使用内置默认链接（如有）。")
+                .font(.caption).foregroundStyle(.secondary)
+        }
+    }
+
     private func isReferenced(_ id: UUID) -> Bool {
         guard let endpoint = editing?.endpoints.first(where: { $0.id == id }) else { return false }
         return editing?.models.contains { $0.callTemplate?.endpointAlias == endpoint.alias } == true
@@ -165,6 +177,8 @@ struct ProfileEditorView: View {
         draftID = editing.id; provider = editing.provider; name = editing.name; alias = editing.alias
         isEnabled = editing.isEnabled; project = editing.project ?? ""; region = editing.region ?? ""
         workspaceName = editing.workspaceName ?? ""; workspaceID = editing.workspaceID ?? ""; notes = editing.notes ?? ""
+        balanceURLText = editing.balanceURL?.absoluteString ?? ""
+        groupText = editing.group ?? ""
         endpoints = editing.endpoints.map { EndpointFormRecord($0) }
         authHeader = editing.authentication.headerName; authPrefix = editing.authentication.prefix
         environmentVariable = editing.authentication.environmentVariable
@@ -193,7 +207,8 @@ struct ProfileEditorView: View {
             endpoints: try endpoints.map { try $0.record() },
             authentication: .init(headerName: authHeader, prefix: authPrefix, environmentVariable: environmentVariable),
             notes: optional(notes), sourceFiles: editing?.sourceFiles ?? [], models: editing?.models ?? [],
-            lastTestedAt: editing?.lastTestedAt, lastTestSucceeded: editing?.lastTestSucceeded, isEnabled: isEnabled)
+            lastTestedAt: editing?.lastTestedAt, lastTestSucceeded: editing?.lastTestSucceeded, isEnabled: isEnabled,
+            balanceURL: try BalanceLink.parse(balanceURLText), group: try ProviderGrouping.parse(groupText))
         try await model.saveProfile(profile, secret: editing == nil && !secret.isEmpty ? secret : nil, original: editing)
     }
 }
