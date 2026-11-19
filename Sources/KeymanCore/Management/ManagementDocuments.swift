@@ -5,7 +5,7 @@ import Foundation
 public enum ManagementDocuments {
     public static func profile(_ data: Data, existing: ProviderProfile? = nil) throws -> ProviderProfile {
         var patch = try object(data)
-        try keys(patch, allowed: ["alias", "name", "provider", "project", "region", "workspaceName", "workspaceID", "endpoints", "authentication", "notes", "sourceFiles", "isEnabled", "balanceURL"])
+        try keys(patch, allowed: ["alias", "name", "provider", "project", "region", "workspaceName", "workspaceID", "endpoints", "authentication", "notes", "sourceFiles", "isEnabled", "balanceURL", "group"])
         if let auth = patch["authentication"] as? [String: Any] {
             try keys(auth, allowed: ["headerName", "prefix", "environmentVariable"])
         }

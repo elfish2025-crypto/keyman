@@ -74,6 +74,7 @@ struct ProfileDetailView: View {
             Section("账号") {
                 LabeledContent("账号标识", value: profile.alias)
                 LabeledContent("供应商", value: profile.provider.rawValue)
+                LabeledContent("分组", value: ProviderGrouping.group(for: profile))
                 LabeledContent("状态", value: profile.isEnabled ? "已启用" : "已停用")
                 if let workspace = profile.workspaceName { LabeledContent("工作空间", value: workspace) }
                 if let workspaceID = profile.workspaceID { LabeledContent("Workspace / App ID", value: workspaceID) }

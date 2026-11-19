@@ -2,6 +2,15 @@
 
 The GUI and CLI share management logic, configuration, and Keychain storage. Management documents contain no secrets. Commands return JSON, with exit code `0` for success and `1` for failure. Management writes support `--dry-run`, which validates the proposed change without modifying configuration, reading Keychain, or calling providers.
 
+## Account groups
+
+The account list is grouped by vendor, not by provider type. Each account may store an optional `group` (up to 40 characters, no line breaks); without one, Keyman infers it from the provider type and endpoint host (Volcengine, Alibaba Bailian, Vidu, Tencent Cloud, MiniMax), falling back to `其他`. Grouping and renaming never touch credentials, aliases, endpoints or models.
+
+```bash
+keyman profile update my-account --file group.json --dry-run   # {"group": "火山引擎", "name": "火山方舟 · 图像与视频"}
+keyman list --json                                             # "group" is the effective group
+```
+
 ## Balance page link
 
 Each account can store an optional `balanceURL`: the provider's own balance or billing page. The GUI shows a balance button on every account row that opens the link in the default browser. Keyman never requests the page, sends credentials to it, or reads a balance.

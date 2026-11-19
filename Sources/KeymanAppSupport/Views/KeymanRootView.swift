@@ -19,11 +19,12 @@ public struct KeymanRootView: View {
     public var body: some View {
         NavigationStack {
             List {
-                ForEach(ProviderKind.allCases, id: \.self) { provider in
-                    let matches = Set(ModelCatalog.entries(model.configuration, query: searchText).map(\.profileAlias))
-                    let profiles = model.configuration.profiles.filter { $0.provider == provider && matches.contains($0.alias) }
+                let matches = Set(ModelCatalog.entries(model.configuration, query: searchText).map(\.profileAlias))
+                let visible = model.configuration.profiles.filter { matches.contains($0.alias) }
+                ForEach(ProviderGrouping.orderedGroups(visible), id: \.self) { group in
+                    let profiles = visible.filter { ProviderGrouping.group(for: $0) == group }
                     if !profiles.isEmpty {
-                        Section(providerTitle(provider)) {
+                        Section(group) {
                             ForEach(profiles) { profile in
                                 NavigationLink(value: profile.id) {
                                     VStack(alignment: .leading, spacing: 4) {
@@ -132,14 +133,6 @@ public struct KeymanRootView: View {
 
     private func credentialLabel(_ id: UUID) -> Text {
         Text(model.credentialLabel(id))
-    }
-
-    private func providerTitle(_ provider: ProviderKind) -> String {
-        switch provider {
-        case .volcengineArk: "火山方舟"
-        case .alibabaBailian: "阿里百炼"
-        case .customREST: "自定义 REST API"
-        }
     }
 
     private func profileSummary(_ profile: ProviderProfile) -> String {

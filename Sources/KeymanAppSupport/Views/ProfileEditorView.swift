@@ -31,6 +31,7 @@ struct ProfileEditorView: View {
     @State private var workspaceID = ""
     @State private var notes = ""
     @State private var balanceURLText = ""
+    @State private var groupText = ""
     @State private var authHeader = "Authorization"
     @State private var authPrefix = "Bearer"
     @State private var environmentVariable = "ARK_API_KEY"
@@ -94,6 +95,7 @@ struct ProfileEditorView: View {
                 Text("其他 / 自定义 REST API").tag(ProviderKind.customREST)
             }
             TextField("名称", text: $name)
+            TextField("分组（可选，如 火山引擎；留空自动判断）", text: $groupText)
             TextField("账号标识（供 Agent 使用）", text: $alias).autocorrectionDisabled()
             if editing != nil {
                 Text("更改标识后，Agent 的命令需使用新标识；已保存的 Key 与模型保持关联。")
@@ -176,6 +178,7 @@ struct ProfileEditorView: View {
         isEnabled = editing.isEnabled; project = editing.project ?? ""; region = editing.region ?? ""
         workspaceName = editing.workspaceName ?? ""; workspaceID = editing.workspaceID ?? ""; notes = editing.notes ?? ""
         balanceURLText = editing.balanceURL?.absoluteString ?? ""
+        groupText = editing.group ?? ""
         endpoints = editing.endpoints.map { EndpointFormRecord($0) }
         authHeader = editing.authentication.headerName; authPrefix = editing.authentication.prefix
         environmentVariable = editing.authentication.environmentVariable
@@ -205,7 +208,7 @@ struct ProfileEditorView: View {
             authentication: .init(headerName: authHeader, prefix: authPrefix, environmentVariable: environmentVariable),
             notes: optional(notes), sourceFiles: editing?.sourceFiles ?? [], models: editing?.models ?? [],
             lastTestedAt: editing?.lastTestedAt, lastTestSucceeded: editing?.lastTestSucceeded, isEnabled: isEnabled,
-            balanceURL: try BalanceLink.parse(balanceURLText))
+            balanceURL: try BalanceLink.parse(balanceURLText), group: try ProviderGrouping.parse(groupText))
         try await model.saveProfile(profile, secret: editing == nil && !secret.isEmpty ? secret : nil, original: editing)
     }
 }
